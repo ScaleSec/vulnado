@@ -1,0 +1,23 @@
+version: "3"
+services:
+  vulnado:
+    build: .
+    ports:
+      - 8080:8080
+    links:
+      - db
+    environment:
+      - PGPASSWORD=vulnado
+      - PGDATABASE=vulnado
+      - PGHOST=db:5432
+      - PGUSER=postgres
+    depends_on:
+      - "db"
+
+  db:
+    image: postgres
+    ports:
+      - 5432:5432
+    environment:
+      - POSTGRES_PASSWORD=vulnado
+      - POSTGRES_DB=vulnado

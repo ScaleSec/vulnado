@@ -5,20 +5,45 @@ import java.sql.DriverManager;
 import java.math.BigInteger;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
+import java.sql.Statement;
+import java.util.UUID;
 
 public class Postgres {
 
     public static Connection connection() {
         try {
             Class.forName("org.postgresql.Driver");
-            return DriverManager.getConnection("jdbc:postgresql://localhost:5432/vulnado",
-                    "postgres", "vulnado");
+            String url = new StringBuilder()
+                    .append("jdbc:postgresql://")
+                    .append(System.getenv("PGHOST"))
+                    .append("/")
+                    .append(System.getenv("PGDATABASE")).toString();
+            return DriverManager.getConnection(url,
+                    System.getenv("PGUSER"), System.getenv("PGPASSWORD"));
         } catch (Exception e) {
             e.printStackTrace();
             System.err.println(e.getClass().getName()+": "+e.getMessage());
             System.exit(1);
         }
         return null;
+    }
+    public static void setup(){
+        try {
+            System.out.println("Setting up Database...");
+            Connection c = connection();
+            Statement stmt = c.createStatement();
+            stmt.executeUpdate("CREATE TABLE IF NOT EXISTS users(user_id VARCHAR (36) PRIMARY KEY, username VARCHAR (50) UNIQUE NOT NULL, password VARCHAR (50) NOT NULL, created_on TIMESTAMP NOT NULL, last_login TIMESTAMP)");
+            stmt.executeUpdate("DELETE FROM users");
+            stmt.executeUpdate(sqlInsertUser("admin", "!!SuperSecretAdmin!!"));
+            stmt.executeUpdate(sqlInsertUser("alice", "AlicePassword!"));
+            stmt.executeUpdate(sqlInsertUser("bob", "BobPassword!"));
+            stmt.executeUpdate(sqlInsertUser("eve", "$EVELknev^l"));
+            stmt.executeUpdate(sqlInsertUser("rick", "!GetSchwifty!"));
+            c.close();
+        } catch (Exception e) {
+            System.out.println(e);
+            System.exit(1);
+        }
     }
 
     // Java program to calculate MD5 hash value
@@ -48,5 +73,15 @@ public class Postgres {
         catch (NoSuchAlgorithmException e) {
             throw new RuntimeException(e);
         }
+    }
+    private static String sqlInsertUser(String username, String password) {
+        return new StringBuilder()
+            .append("INSERT INTO users (user_id, username, password, created_on) VALUES ('")
+            .append(UUID.randomUUID())
+            .append("', '")
+            .append(username)
+            .append("', '")
+            .append(md5(password))
+            .append("', current_timestamp)").toString();
     }
 }

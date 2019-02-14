@@ -29,7 +29,7 @@ public class User {
                 String password = rs.getString("password");
                 user = new User(user_id, username, password);
             }
-            stmt.close();
+            cxn.close();
         } catch (Exception e) {
             e.printStackTrace();
             System.err.println(e.getClass().getName()+": "+e.getMessage());
@@ -37,4 +37,3 @@ public class User {
         return user;
     }
 }
-

