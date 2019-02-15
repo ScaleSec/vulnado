@@ -10,36 +10,25 @@ import java.io.Serializable;
 @RestController
 @EnableAutoConfiguration
 public class LoginController {
-
-    /*
-    * NOTE: Though you may not be able to execute a 1=1 type login, you can still update the password and re-login a separate time
-    * VALID ACCESS
-    * $ curl -XPOST -H 'Content-Type: application/json' -d '{"username":"rick", "password":"!GetSchwifty!"}' 'http://localhost:8080/login'
-    *
-    * INVALID ACCESS
-    * $ curl -XPOST -H 'Content-Type: application/json' -d '{"username":"rick", "password":"password"}' 'http://localhost:8080/login'
-    *
-    * SQL INJECTION
-    * $ curl -XPOST -H 'Content-Type: application/json' -d "{\"username\":\"rick'; update users set password=md5('password') where username = 'rick' --\", \"password\":\"foo\"}" 'http://localhost:8080/login'
-    *
-    * VALID ACCESS WITH CHANGED PASSWORD
-    * $ curl -XPOST -H 'Content-Type: application/json' -d '{"username":"rick", "password":"password"}' 'http://localhost:8080/login'
-    * */
-
     @RequestMapping(value = "/login", method = RequestMethod.POST, produces = "application/json", consumes = "application/json")
-    User login(@RequestBody LoginInput input) {
+    LoginResponse login(@RequestBody LoginRequest input) {
         User user = User.fetch(input.username);
         if (Postgres.md5(input.password).equals(user.hashedPassword)) {
-            return user;
+            return new LoginResponse("Access Granted! Have a cookie 🍪");
         } else {
             throw new Unauthorized("Access Denied");
         }
     }
 }
 
-class LoginInput implements Serializable {
+class LoginRequest implements Serializable {
     public String username;
     public String password;
+}
+
+class LoginResponse implements Serializable {
+    public String message;
+    public LoginResponse(String msg) { this.message = msg; }
 }
 
 @ResponseStatus(HttpStatus.UNAUTHORIZED)

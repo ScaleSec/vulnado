@@ -6,6 +6,7 @@ services:
       - 8080:8080
     links:
       - db
+      - internal_site
     environment:
       - PGPASSWORD=vulnado
       - PGDATABASE=vulnado
@@ -16,8 +17,9 @@ services:
 
   db:
     image: postgres
-    ports:
-      - 5432:5432
     environment:
       - POSTGRES_PASSWORD=vulnado
       - POSTGRES_DB=vulnado
+
+  internal_site:
+    build: internal_site
