@@ -57,7 +57,7 @@ Try to gain access as the user `rick`.
     We should get an error and that's fine, we've broken the JDBC parser and successfully changed `rick`s password to something we know: `password`. Now try loggin in with that password:
 
     ```
-    $ curl -XPOST -H 'Content-Type: application/json' -d '{"username":"rick", "password":"password"}' 'http://localhost:8080/login'
+    $ curl -XPOST -H 'Content-Type: application/json' -d '{"username":"rick", "password":"password"}' 'http://localhost:8080/login' | jq .
     ```
 
 </details>

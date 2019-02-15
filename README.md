@@ -13,3 +13,4 @@ docker-compose up
 ## Exercises
 
 * [SQL Injection](exercises/01-sql-injection.md)
+* [SQL Injection](exercises/02-ssrf.md)
