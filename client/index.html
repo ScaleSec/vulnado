@@ -1,0 +1,80 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <!-- Required meta tags -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+    <link href="css/main.css" rel="stylesheet">
+    <title>Vulnado</title>
+  </head>
+  <body>
+    <nav class="navbar navbar-expand-md navbar-dark bg-dark fixed-top">
+      <a class="navbar-brand" href="index.html">Vulnado</a>
+      <div class="navbar-collapse collapse w-100 order-3 dual-collapse2">
+        <ul class="navbar-nav ml-auto">
+          <li class="nav-item">
+            <div id="signout"></div>
+          </li>
+        </ul>
+      </div>
+    </nav>
+
+    <main role="main" class="container">
+
+      <div class="puppy">
+        <h1>Doggos4All</h1>
+        <p>Check out this adorable pupper, you should totally comment on it!</p>
+        <img src="images/doggo.jpg" height="358px">
+      </div>
+      <div class="container">
+        <div class="row">
+          <div class="col-sm-12">
+            <h2>Comments</h2>
+          </div><!-- /col-sm-12 -->
+        </div><!-- /row -->
+        <!--Template here -->
+        <div id="comments-container"></div>
+      </div>
+
+      <div class="row" style="padding-top:20px">
+        <div class="col-sm-12">
+          <div class="card p-2">
+            <div class="input-group">
+              <input type="text" id="new-comment" class="form-control" placeholder="Comment">
+              <div class="input-group-append">
+                <button id="submit-comment" class="btn btn-primary">Submit</button>
+              </div>
+            </div>
+          </div>
+        </div><!-- /col-sm-12 -->
+      </div><!--/row -->
+    </main><!-- /.container -->
+
+    <!-- Optional JavaScript -->
+    <script src="https://code.jquery.com/jquery-3.2.1.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
+    <script src="http://builds.handlebarsjs.com.s3.amazonaws.com/handlebars.min-v4.1.0.js"></script>
+    <script src="js/index.js"></script>
+    <script id="comment-template" type="text/x-handlebars-template">
+      <div class="row" data-comment_id="{{id}}">
+        <div class="col-sm-12" style="padding:5px">
+          <div class="card">
+            <div class="card-header">
+              <strong>{{username}}</strong> commented at {{created_on}}
+              <span class="delete-comment">
+                <img src="images/trash.png" height=15px/>
+              </span>
+            </div>
+            <div class="card-body">
+              <p class="card-text">{{{body}}}</p>
+            </div>
+          </div>
+        </div><!-- /col-sm-12 -->
+      </div><!-- /row -->
+    </script>
+  </body>
+</html>

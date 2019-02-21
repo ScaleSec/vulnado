@@ -1,0 +1,44 @@
+body {
+  padding-top: 5rem;
+}
+.puppy {
+  padding: 3rem 1.5rem;
+  text-align: center;
+}
+
+.delete-comment {
+  float: right;
+  border-radius: 5px;
+  padding: 3px 9px 3px 9px;
+}
+
+.delete-comment:hover {
+  cursor: pointer;
+  background-color: red;
+}
+.form-control.top {
+  border-radius: .5em .5em 0 0
+}
+
+.form-control.bottom {
+  border-radius: 0 0 .5em .5em
+}
+
+.btn-block {
+  margin-top: 10px;
+}
+
+#signout {
+  display: block;
+  height: 32px;
+  width: 32px;
+  background-size:cover;
+  position:absolute;
+  right: 40px;
+  top: 20px;
+  background:url('../images/signout.png');
+}
+#signout:hover {
+  cursor: pointer;
+  background:url('../images/signout-hover.png');
+}

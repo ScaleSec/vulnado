@@ -10,6 +10,7 @@ import java.io.Serializable;
 @RestController
 @EnableAutoConfiguration
 public class LinksController {
+    @CrossOrigin(origins = "*")
     @RequestMapping(value = "/links", produces = "application/json")
     List<String> links(@RequestParam String url) {
         return LinkLister.getLinks(url);
