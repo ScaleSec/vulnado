@@ -19,5 +19,6 @@ The docker network created by `docker-compose` maps pretty well to a multi-tier 
 ## Exercises
 
 * [SQL Injection](exercises/01-sql-injection.md)
-* [SSRF - Server Side Request Forgery](exercises/02-ssrf.md)
+* [XSS - Cross Site Scripting](exercises/02-xss.md)
+* [SSRF - Server Side Request Forgery](exercises/03-ssrf.md)
 * [RCE - Remote Code Execution & Reverse Shell](exercises/04-rce-reverse-shell.md)

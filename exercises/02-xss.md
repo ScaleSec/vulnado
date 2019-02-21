@@ -48,9 +48,9 @@ Navigate to http://localhost:1337 and you'll be presented with a login page. Now
 
   In a terminal, let's start a `netcat` listener:
 
-  On Mac: `sudo nc -l 18200`
-  On Linux: `sudo nc -l -p 18200`
-  On Windows (as Administrator): `nc -l -p 18200`
+  * On Mac: `sudo nc -l 18200`
+  * On Linux: `sudo nc -l -p 18200`
+  * On Windows (as Administrator): `nc -l -p 18200`
 
   Now let's try to grab the session token from localStorage (this could just as easily be `document.cookie`)
 
