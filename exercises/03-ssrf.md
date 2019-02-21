@@ -42,6 +42,8 @@ Once you have this list try to execute a SSRF attack against the endpoint `/link
   ]
   ```
 
-  **Followup question:** How would we validate the url that is being passed into this function?
+  **Followup question:**
+  1. How would we validate the url that is being passed into this function?
+  2. Use the `/links-v2` and see if you can still break it.
 
 </details>
