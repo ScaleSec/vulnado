@@ -5,6 +5,7 @@ import java.sql.DriverManager;
 import java.math.BigInteger;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
+import java.sql.PreparedStatement;
 import java.sql.Statement;
 import java.util.UUID;
 
@@ -32,13 +33,24 @@ public class Postgres {
             System.out.println("Setting up Database...");
             Connection c = connection();
             Statement stmt = c.createStatement();
+
+            // Create Schema
             stmt.executeUpdate("CREATE TABLE IF NOT EXISTS users(user_id VARCHAR (36) PRIMARY KEY, username VARCHAR (50) UNIQUE NOT NULL, password VARCHAR (50) NOT NULL, created_on TIMESTAMP NOT NULL, last_login TIMESTAMP)");
+            stmt.executeUpdate("CREATE TABLE IF NOT EXISTS comments(id VARCHAR (36) PRIMARY KEY, username VARCHAR (36), body VARCHAR (500), created_on TIMESTAMP NOT NULL)");
+
+            // Clean up any existing data
             stmt.executeUpdate("DELETE FROM users");
-            stmt.executeUpdate(sqlInsertUser("admin", "!!SuperSecretAdmin!!"));
-            stmt.executeUpdate(sqlInsertUser("alice", "AlicePassword!"));
-            stmt.executeUpdate(sqlInsertUser("bob", "BobPassword!"));
-            stmt.executeUpdate(sqlInsertUser("eve", "$EVELknev^l"));
-            stmt.executeUpdate(sqlInsertUser("rick", "!GetSchwifty!"));
+            stmt.executeUpdate("DELETE FROM comments");
+
+            // Insert seed data
+            insertUser("admin", "!!SuperSecretAdmin!!");
+            insertUser("alice", "AlicePassword!");
+            insertUser("bob", "BobPassword!");
+            insertUser("eve", "$EVELknev^l");
+            insertUser("rick", "!GetSchwifty!");
+
+            insertComment("rick", "cool dog m8");
+            insertComment("alice", "OMG so cute!");
             c.close();
         } catch (Exception e) {
             System.out.println(e);
@@ -74,14 +86,32 @@ public class Postgres {
             throw new RuntimeException(e);
         }
     }
-    private static String sqlInsertUser(String username, String password) {
-        return new StringBuilder()
-            .append("INSERT INTO users (user_id, username, password, created_on) VALUES ('")
-            .append(UUID.randomUUID())
-            .append("', '")
-            .append(username)
-            .append("', '")
-            .append(md5(password))
-            .append("', current_timestamp)").toString();
+
+    private static void insertUser(String username, String password) {
+       String sql = "INSERT INTO users (user_id, username, password, created_on) VALUES (?, ?, ?, current_timestamp)";
+       PreparedStatement pStatement = null;
+       try {
+          pStatement = connection().prepareStatement(sql);
+          pStatement.setString(1, UUID.randomUUID().toString());
+          pStatement.setString(2, username);
+          pStatement.setString(3, md5(password));
+          pStatement.executeUpdate();
+       } catch(Exception e) {
+         e.printStackTrace();
+       }
+    }
+
+    private static void insertComment(String username, String body) {
+        String sql = "INSERT INTO comments (id, username, body, created_on) VALUES (?, ?, ?, current_timestamp)";
+        PreparedStatement pStatement = null;
+        try {
+            pStatement = connection().prepareStatement(sql);
+            pStatement.setString(1, UUID.randomUUID().toString());
+            pStatement.setString(2, username);
+            pStatement.setString(3, body);
+            pStatement.executeUpdate();
+        } catch(Exception e) {
+            e.printStackTrace();
+        }
     }
 }

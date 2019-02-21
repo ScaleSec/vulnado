@@ -15,6 +15,11 @@ services:
     depends_on:
       - "db"
 
+  client:
+    build: client
+    ports:
+      - 1337:80
+
   db:
     image: postgres
     environment:
