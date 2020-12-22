@@ -1,0 +1,48 @@
+# This workflow integrates ShiftLeft NG SAST with GitHub
+# Visit https://docs.shiftleft.io for help
+name: Analyze with ShiftLeft NG SAST
+
+on:
+  schedule:
+    - cron: "0 * * * *"  
+  push: # include to analyze when you push
+    branches:
+      - master
+      - feature/*
+      - fix/*
+  pull_request: # include to analyze when you create a pull request
+    branches:
+      - master
+
+jobs:
+  NG SAST-Build:
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v2
+    # We are building this application with Java 11
+    - name: Setup Java JDK
+      uses: actions/setup-java@v1.3.0
+      with:
+        java-version: 11.0.x
+    - name: Package with maven
+      run: mvn compile package
+    - name: Download ShiftLeft cli
+      run: |
+        curl https://cdn.shiftleft.io/download/sl > ${GITHUB_WORKSPACE}/sl && chmod a+rx ${GITHUB_WORKSPACE}/sl
+    # ShiftLeft requires Java 1.8. Post the package step override the version
+    - name: Setup Java JDK
+      uses: actions/setup-java@v1.3.0
+      with:
+        java-version: 1.8
+    - name: Analyze with NG SAST
+      run: ${GITHUB_WORKSPACE}/sl analyze --app GH_Vulnado --tag branch=${GITHUB_REF} --java --cpg target/hello-shiftleft-0.0.1.jar
+      env:
+        SHIFTLEFT_ORG_ID: ${{ secrets.SHIFTLEFT_ORG_ID }}
+        SHIFTLEFT_ACCESS_TOKEN: ${{ secrets.SHIFTLEFT_ACCESS_TOKEN }}
+    - name: Create status check
+      run: |
+        URL="https://www.shiftleft.io/violationlist/ShiftLeftJava?apps=ShiftLeftJava&isApp=1"
+        GH_CHECK_URL="https://api.github.com/repos/${GITHUB_REPOSITORY}/check-runs"
+        curl -XPOST $GH_CHECK_URL -H "Authorization: Token ${GITHUB_TOKEN}" -H "accept: application/vnd.github.antiope-preview+json" -H "Content-Type: application/json" -d "{\"name\": \"ShiftLeft NG SAST\", \"head_sha\": \"${GITHUB_REF}\", \"external_id\": \"ShiftLeftJava\", \"details_url\": \"${URL}\", \"status\": \"completed\", \"conclusion\": \"action_required\", \"output\": {\"title\": \"ShiftLeft NG SAST Findings\", \"summary\": \"Visit ${URL} for the findings\"}}"
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
