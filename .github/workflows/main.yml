@@ -22,6 +22,8 @@ jobs:
     # We are building this application with Java 11
     - name: Setup Java JDK
       uses: actions/setup-java@v1.3.0
+      env:
+        ACTIONS_ALLOW_UNSECURE_COMMANDS: true
       with:
         java-version: 11.0.x
     - name: Package with maven
