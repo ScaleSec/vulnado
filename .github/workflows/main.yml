@@ -32,6 +32,8 @@ jobs:
     # ShiftLeft requires Java 1.8. Post the package step override the version
     - name: Setup Java JDK
       uses: actions/setup-java@v1.3.0
+      env:
+        ACTIONS_ALLOW_UNSECURE_COMMANDS: true
       with:
         java-version: 1.8
     - name: Analyze with NG SAST
