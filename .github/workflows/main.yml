@@ -15,7 +15,7 @@ on:
       - master
 
 jobs:
-  NG SAST-Build:
+  NG-SAST-Build:
     runs-on: ubuntu-latest
     steps:
     - uses: actions/checkout@v2
