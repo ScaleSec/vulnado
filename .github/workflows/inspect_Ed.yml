@@ -31,7 +31,7 @@ jobs:
         SHIFTLEFT_ACCESS_TOKEN: ${{ secrets.SHIFTLEFT_ACCESS_TOKEN }}
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
     - name: Report_Ed
-      run:  curl -H 'Authorization: Bearer eyJhbGciOiJSUzUxMiIsInR5cCI6IkpXVCJ9.eyJpYXQiOjE2MjgxODQ0NTQsImlzcyI6IlNoaWZ0TGVmdCIsIm9yZ0lEIjoiMWE0ZTFkMDEtODkyOC00YjYwLTgxMWYtOTkzNTY0NDY3Mzg1IiwidXNlcklEIjoiNDJkMWUwZDgtYmViZS00NTFiLTliN2EtNWExMmUyYzE1ZWYyIiwic2NvcGVzIjpbInNlYXRzOndyaXRlIiwiZXh0ZW5kZWQiLCJhcGk6djIiLCJ1cGxvYWRzOndyaXRlIiwibG9nOndyaXRlIiwicGlwZWxpbmVzdGF0dXM6cmVhZCIsIm1ldHJpY3M6d3JpdGUiLCJwb2xpY2llczpjdXN0b21lciJdfQ.ZrcFo2bYiRPgcBm2xm4uq7ptXoN6CyGuxGz5Y4QsGZ5q0-F6HYcXmFgMIj8nCzqaV2qALtwQNevQ0BULFgfjTDLPiaXTr3Bh8ktKSkK9MXHvJ3a8SXLeru3NUXWJfpB49hZoCNLf6R5JXtv9AKHUqafpera_yO_H3Ni1sWwK_GpwZ_ola2Pq063UNe36DGfyvJJ6eg0VcJthGQ3IWrzwSKfj5ZxC8YaxET4G4yx85zXPZwJh7KsbruSHqPrar0G_Y2kvKv1M5nfzlh_SgAobqRG2FLy2siNeP0a22yhqutM1lod2KAiDInqEpLmjM0ctbarZIEfkUpMxZlI1MR_H8Q''https://www.shiftleft.io/api/v4/orgs/1a4e1d01-8928-4b60-811f-993564467385/apps/Vulnado/findings?severity=critical'
+      run:  curl https://www.shiftleft.io/api/v4/orgs/1a4e1d01-8928-4b60-811f-993564467385/apps/Vulnado/findings?severity=critical
       env:
         SHIFTLEFT_ACCESS_TOKEN: ${{ secrets.SHIFTLEFT_ACCESS_TOKEN }}
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
