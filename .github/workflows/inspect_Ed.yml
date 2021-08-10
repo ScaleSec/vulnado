@@ -31,9 +31,9 @@ jobs:
         SHIFTLEFT_ACCESS_TOKEN: ${{ secrets.SHIFTLEFT_ACCESS_TOKEN }}
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
     - name: Report_Ed
+      run:  curl https://www.shiftleft.io/api/v4/orgs/1a4e1d01-8928-4b60-811f-993564467385/apps/Vulnado/findings?severity=critical
       env:
         SHIFTLEFT_ACCESS_TOKEN: ${{ secrets.SHIFTLEFT_ACCESS_TOKEN }}
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-      run:  curl https://www.shiftleft.io/api/v4/orgs/1a4e1d01-8928-4b60-811f-993564467385/apps/Vulnado/findings?severity=critical
       
       
