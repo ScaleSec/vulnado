@@ -1,32 +1,40 @@
 # This workflow integrates ShiftLeft NG SAST with GitHub
 # Visit https://docs.shiftleft.io for help
-name: vulnado_Ed
+name: Vulnado_Ed
 
 on:
   pull_request:
   workflow_dispatch:
   push:
-    # We recommend triggering a scan when merging to your default branch as a best practice,
-    # especially if you'd like to compare the results of two scans (e.g., a feature branch against the
-    # default branch)
+  # We recommend triggering a scan when merging to your default branch as a best practice,
+  # especially if you'd like to compare the results of two scans (e.g., a feature branch against the
+  # default branch)
     branches:
       - main
       - master
 jobs:
-  NextGen-Static-Analysis:
+  NG-SAST-Build:
     runs-on: ubuntu-latest
     steps:
     - uses: actions/checkout@v2
+    # We are building this application with Java 11
+    - name: Setup Java JDK
+      uses: actions/setup-java@v1.4.3
+      with:
+        java-version: 11.0.x
+    - name: Package with maven
+      run: mvn compile package
     - name: Download ShiftLeft CLI
       run: |
-        curl https://cdn.shiftleft.io/download/sl > ${GITHUB_WORKSPACE}/sl && chmod a+rx ${GITHUB_WORKSPACE}/sl       
+        curl https://cdn.shiftleft.io/download/sl > ${GITHUB_WORKSPACE}/sl && chmod a+rx ${GITHUB_WORKSPACE}/sl
     # ShiftLeft requires Java 1.8. Post the package step override the version
     - name: Setup Java JDK
       uses: actions/setup-java@v1.4.3
       with:
         java-version: 1.8
     - name: NextGen Static Analysis
-      run: ${GITHUB_REPOSITORY}/${GITHUB_WORKSPACE}/sl analyze --app vulnado --tag branch=${{ github.head_ref }} --js --cpg $(pwd)
+      run: ${GITHUB_WORKSPACE}/sl analyze --wait --app {{ .Application }} --tag branch={{`${{ github.head_ref }}`}} --vcs-prefix-correction "io/shiftleft=src/main/java/" --java --cpg target/hello-shiftleft-0.0.1.jar
+
       env:
         SHIFTLEFT_ACCESS_TOKEN: ${{ secrets.SHIFTLEFT_ACCESS_TOKEN }}
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
