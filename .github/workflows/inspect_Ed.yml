@@ -1,0 +1,43 @@
+# This workflow integrates ShiftLeft NG SAST with GitHub
+# Visit https://docs.shiftleft.io for help
+name: Vulnado_Ed
+
+on:
+  pull_request:
+  workflow_dispatch:
+  push:
+  # We recommend triggering a scan when merging to your default branch as a best practice,
+  # especially if you'd like to compare the results of two scans (e.g., a feature branch against the
+  # default branch)
+    branches:
+      - main
+      - master
+jobs:
+  NG-SAST-Build:
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v2
+    # We are building this application with Java 11
+    - name: Setup Java JDK
+      uses: actions/setup-java@v1.4.3
+      with:
+        java-version: 11.0.x
+    - name: Package with maven
+      run: mvn compile package
+    - name: Download ShiftLeft CLI
+      run: |
+        curl https://cdn.shiftleft.io/download/sl > ${GITHUB_WORKSPACE}/sl && chmod a+rx ${GITHUB_WORKSPACE}/sl
+    # ShiftLeft requires Java 1.8. Post the package step override the version
+    - name: Setup Java JDK
+      uses: actions/setup-java@v1.4.3
+      with:
+        java-version: 1.8
+    - name: NextGen Static Analysis
+      run: ${GITHUB_WORKSPACE}/sl analyze --wait --app vulnado --tag branch={{`${{ github.head_ref }}`}} --vcs-prefix-correction "io/shiftleft=src/main/java/" --java --cpg target/vulnado-0.0.1-SNAPSHOT.jar
+
+      env:
+        SHIFTLEFT_ACCESS_TOKEN: ${{ secrets.SHIFTLEFT_ACCESS_TOKEN }}
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+    - name: Report_Ed
+      run:  curl -H "Authorization:Bearer eyJhbGciOiJSUzUxMiIsInR5cCI6IkpXVCJ9.eyJpYXQiOjE2MjgxODQ0NTQsImlzcyI6IlNoaWZ0TGVmdCIsIm9yZ0lEIjoiMWE0ZTFkMDEtODkyOC00YjYwLTgxMWYtOTkzNTY0NDY3Mzg1IiwidXNlcklEIjoiNDJkMWUwZDgtYmViZS00NTFiLTliN2EtNWExMmUyYzE1ZWYyIiwic2NvcGVzIjpbInNlYXRzOndyaXRlIiwiZXh0ZW5kZWQiLCJhcGk6djIiLCJ1cGxvYWRzOndyaXRlIiwibG9nOndyaXRlIiwicGlwZWxpbmVzdGF0dXM6cmVhZCIsIm1ldHJpY3M6d3JpdGUiLCJwb2xpY2llczpjdXN0b21lciJdfQ.ZrcFo2bYiRPgcBm2xm4uq7ptXoN6CyGuxGz5Y4QsGZ5q0-F6HYcXmFgMIj8nCzqaV2qALtwQNevQ0BULFgfjTDLPiaXTr3Bh8ktKSkK9MXHvJ3a8SXLeru3NUXWJfpB49hZoCNLf6R5JXtv9AKHUqafpera_yO_H3Ni1sWwK_GpwZ_ola2Pq063UNe36DGfyvJJ6eg0VcJthGQ3IWrzwSKfj5ZxC8YaxET4G4yx85zXPZwJh7KsbruSHqPrar0G_Y2kvKv1M5nfzlh_SgAobqRG2FLy2siNeP0a22yhqutM1lod2KAiDInqEpLmjM0ctbarZIEfkUpMxZlI1MR_H8Q" https://www.shiftleft.io/api/v4/orgs/1a4e1d01-8928-4b60-811f-993564467385/apps/Vulnado/findings?severity=critical&ID=15
+            
