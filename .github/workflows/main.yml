@@ -33,7 +33,7 @@ jobs:
       with:
         java-version: 1.8
     - name: NextGen Static Analysis
-      run: ${GITHUB_WORKSPACE}/sl analyze --wait --app {{ .Application }} --tag branch={{`${{ github.head_ref }}`}} --vcs-prefix-correction "io/shiftleft=src/main/java/" --java --cpg target/vulnado-0.0.1-SNAPSHOT.jar
+      run: ${GITHUB_WORKSPACE}/sl analyze --wait --app {{ .Application }} --tag branch={{`${{ github.head_ref }}`}} --vcs-prefix-correction "*=src/main/java/" --java --cpg target/vulnado-0.0.1-SNAPSHOT.jar
 
       env:
         SHIFTLEFT_ACCESS_TOKEN: ${{ secrets.SHIFTLEFT_ACCESS_TOKEN }}
