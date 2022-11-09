@@ -1,1 +1,1 @@
-importantRules = ["COMMAND_INJECTION"]
+importantRules = ["SQL_INJECTION_JDBC"]
