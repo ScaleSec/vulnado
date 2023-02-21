@@ -52,12 +52,12 @@ jobs:
             -Dsonar.projectKey=saby22_vulnado
             -Dsonar.organization=saby22
             
-  Dependency:
-      runs-on: ubuntu-latest
-      
-      steps:
-      - name: 'Checkout Repository'
-        uses: actions/checkout@v3
-      - name: 'Dependency Review'
-        uses: actions/dependency-review-action@v2
+  SCA-SCAN:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@master
+      - name: Run Snyk to check for vulnerabilities
+        uses: snyk/actions/maven@master
+        env:
+          SNYK_TOKEN: ${{ secrets.SNYK_TOKEN }}
             
