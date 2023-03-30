@@ -49,7 +49,7 @@ jobs:
         with:
           # Additional arguments for the sonarcloud scanner
           args:
-            -Dsonar.projectKey=saby22_vulnado
+            -Dsonar.projectKey=saby22
             -Dsonar.organization=saby22
             
   SnykSCA-SCAN:
