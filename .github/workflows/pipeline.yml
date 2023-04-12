@@ -85,10 +85,10 @@ jobs:
       contents: read
       security-events: write
 
-    strategy:
-      fail-fast: false
-      matrix:
-        language: [ 'java' ]
+    #strategy:
+      #fail-fast: false
+      #matrix:
+        #language: [ 'java' ]
          
 
     steps:
@@ -98,15 +98,6 @@ jobs:
      #Initializes the CodeQL tools for scanning.
     - name: Initialize CodeQL
       uses: github/codeql-action/init@v2
-      with:
-        languages: ${{ matrix.language }}
-         #If you wish to specify custom queries, you can do so here or in a config file.
-         #By default, queries listed here will override any specified in a config file.
-         #Prefix the list here with "+" to use these queries and those in the config file.
-        
-        # Details on CodeQL's query packs refer to : https://docs.github.com/en/code-security/code-scanning/automatically-scanning-your-code-for-vulnerabilities-and-errors/configuring-code-scanning#using-queries-in-ql-packs
-        # queries: security-extended,security-and-quality
-
         
     # Autobuild attempts to build any compiled languages  (C/C++, C#, or Java).
     # If this step fails, then you should remove it and run the build manually (see below)
@@ -119,8 +110,6 @@ jobs:
 
     - name: Perform CodeQL Analysis
       uses: github/codeql-action/analyze@v2
-      with:
-       category: "/language:${{matrix.language}}"
     
   Codacy-Security-Scan:
     runs-on: ubuntu-latest
@@ -174,10 +163,10 @@ jobs:
       with:
         image: your/image-to-test
         args: --file=Dockerfile
-    - name: Upload result to GitHub Code Scanning
-      uses: github/codeql-action/upload-sarif@v2
-      with:
-        sarif_file: snyk.sarif
+    #- name: Upload result to GitHub Code Scanning
+      #uses: github/codeql-action/upload-sarif@v2
+      #with:
+        #sarif_file: snyk.sarif
   
 
 
