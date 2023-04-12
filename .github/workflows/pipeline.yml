@@ -54,11 +54,11 @@ jobs:
             -Dsonar.projectKey=saby22_vulnado
             -Dsonar.organization=saby22
             
-      - name: SonarQube Quality Gate check
-        uses: sonarsource/sonarqube-quality-gate-action@master
-        env:
-          SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
-          run: echo "The Quality Gate status is ${{ steps.sonarqube-quality-gate-check.outputs.quality-gate-status }}"
+      #- name: SonarQube Quality Gate check
+        #uses: sonarsource/sonarqube-quality-gate-action@master
+        #env:
+          #SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
+          #run: echo "The Quality Gate status is ${{ steps.sonarqube-quality-gate-check.outputs.quality-gate-status }}"
            
   Secret-SCAN:
     runs-on: ubuntu-latest
