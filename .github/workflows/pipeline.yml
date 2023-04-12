@@ -51,7 +51,13 @@ jobs:
           args:
             -Dsonar.projectKey=saby22_vulnado
             -Dsonar.organization=saby22
-            
+  
+  Secret-SCAN:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+      - uses: max/secret-scan@master
+      
   SnykSCA-SCAN:
     runs-on: ubuntu-latest
     steps:
