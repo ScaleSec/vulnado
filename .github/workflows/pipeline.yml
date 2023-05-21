@@ -15,7 +15,31 @@ on:
     branches: [ "master" ]
 
 jobs:
-  Maven-Build:
+
+threagile_job:
+    runs-on: ubuntu-latest
+    name: Threat Model Analysis
+    steps:
+      
+      # Checkout the repo
+      - name: Checkout Workspace
+        uses: actions/checkout@v2
+     
+      # Run Threagile
+      - name: Run Threagile
+        id: threagile
+        uses: threagile/run-threagile-action@v1
+        with:
+          model-file: 'threagile.yaml'
+     
+      # Archive resulting files as artifacts
+      - name: Archive Results
+        uses: actions/upload-artifact@v2
+        with:
+          name: threagile-report
+          path: threagile/output
+
+Maven-Build:
 
     runs-on: ubuntu-latest
 
@@ -34,7 +58,7 @@ jobs:
     - name: Update dependency graph
       uses: advanced-security/maven-dependency-submission-action@571e99aab1055c2e71a1e2309b9691de18d6b7d6
       
-  SonarQuality-Scan:
+SonarQuality-Scan:
     runs-on: ubuntu-latest
 
     steps:
@@ -60,13 +84,13 @@ jobs:
           #SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
           #run: echo "The Quality Gate status is ${{ steps.sonarqube-quality-gate-check.outputs.quality-gate-status }}"
            
-  Secret-SCAN:
+Secret-SCAN:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v2
       - uses: max/secret-scan@master
       
-  SnykSCA-SCAN:
+SnykSCA-SCAN:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@master
@@ -78,7 +102,7 @@ jobs:
           args: --severity-threshold=Critical,High
           command: monitor
           
-  CodeQL-SAST:
+CodeQL-SAST:
     runs-on: ubuntu-latest
     permissions:
       actions: read
@@ -111,7 +135,7 @@ jobs:
     - name: Perform CodeQL Analysis
       uses: github/codeql-action/analyze@v2
     
-  Codacy-Security-Scan:
+Codacy-Security-Scan:
     runs-on: ubuntu-latest
     steps:
       # Checkout the repository to the GitHub Actions runner
@@ -140,17 +164,17 @@ jobs:
         with:
           sarif_file: results.sarif
    
-  Snyk-container:
+    Snyk-container:
     permissions:
       contents: read # for actions/checkout to fetch code
       security-events: write # for github/codeql-action/upload-sarif to upload SARIF results
       actions: read # only required for a private repository by github/codeql-action/upload-sarif to get the Action run status
-    runs-on: ubuntu-latest
-    steps:
-    - uses: actions/checkout@v3
-    - name: Build a Docker image
+      runs-on: ubuntu-latest
+      steps:
+      - uses: actions/checkout@v3
+      - name: Build a Docker image
       run: docker build -t your/image-to-test .
-    - name: Run Snyk to check Docker image for vulnerabilities
+       - name: Run Snyk to check Docker image for vulnerabilities
       # Snyk can be used to break the build when it detects vulnerabilities.
       # In this case we want to upload the issues to GitHub Code Scanning
       continue-on-error: true
