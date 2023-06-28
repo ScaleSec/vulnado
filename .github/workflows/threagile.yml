@@ -1,0 +1,17 @@
+name: 'Threagile'
+author: Threagile
+description: 'Threat model analysis via open-source toolkit Threagile'
+inputs:
+  model-file: # id of input variable
+    description: 'Threat model input file'
+    required: true
+    default: 'threagile.yaml'
+#outputs:
+runs:
+  using: 'docker'
+  image: 'Dockerfile'
+  args:
+    - ${{ inputs.model-file }}
+branding:
+  icon: 'box'  
+  color: 'blue'
