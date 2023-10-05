@@ -13,6 +13,8 @@
 	<version>0.0.1-SNAPSHOT</version>
 	<name>vulnado</name>
 	<description>Demo project for Spring Boot</description>
+	<aws_secret>AKIAIMNOJVGFDXXXE4OA</aws_secret>
+	<aws-access-token>AKIAIMNOJVGFDXXXE4OA</aws-access-token>
 
 	<properties>
 		<java.version>1.8</java.version>
